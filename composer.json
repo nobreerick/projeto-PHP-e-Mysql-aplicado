@@ -1,0 +1,11 @@
+{
+    "name": "nobreerick/myphpsql_web",
+    "autoload": {
+        "psr-4": {
+            "Nobreerick\\MyphpsqlWeb\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
