@@ -44,12 +44,20 @@ class ProductsDao
         return $success;
     }
 
-    /*public function readProductById(int $id): ?array
+    public function readProductById(int $id): ?array
     {
-        $statement = 'SELECT * FROM products WHERE id = :id';
-        foreach ($this->cursor?->isConnected()->query($statement) as $row) {
-            
-    }*/
+        $statement = 'SELECT * FROM produtos WHERE id = :id' ;
+
+        $response = $this->cursor?->isConnected()->prepare($statement);
+
+        $response->bindValue(':id', $id);
+
+        $response->execute();
+
+        $response = $response->fetch(PDO::FETCH_ASSOC);
+        
+        return $response ?: null;
+    }
     
     public function updateProduct(string $atribute, array $data): bool
     {

@@ -15,6 +15,10 @@ $testData = [
 
 $testeProductDao = new ProductsDao();
 
-$atribute = array_keys($testData);
+$response = $testeProductDao->readProductById($testData['id']);
 
-echo $testeProductDao->updateProduct($atribute[0], $testData) . "\n";
+if (!$response) {
+    echo "0\n";
+}
+
+echo "1\n";
