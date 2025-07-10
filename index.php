@@ -1,6 +1,14 @@
 <?php 
     require_once 'vendor/autoload.php';
+    use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
+    use Nobreerick\MyphpsqlWeb\domain\models\Product;
     
+    $produtosCafe = Product::retrieveArrayProducts('tipo', ['tipo' => 'Café']);
+    $produtosAlmoco = Product::retrieveArrayProducts('tipo', ['tipo' => 'Almoço']);
+
+    var_dump($produtosCafe);
+    var_dump($produtosAlmoco); 
+
 ?>
 
 <!doctype html>

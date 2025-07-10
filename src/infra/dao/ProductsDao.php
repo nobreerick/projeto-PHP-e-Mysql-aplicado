@@ -5,7 +5,6 @@ namespace Nobreerick\MyphpsqlWeb\infra\dao;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Nobreerick\MyphpsqlWeb\infra\ConnectionMaker;
-use Nobreerick\MyphpsqlWeb\Domain\Models\Products;
 use InvalidArgumentException;
 use PDOException;
 use PDO;
@@ -46,15 +45,39 @@ class ProductsDao
 
     public function readProductById(int $id): ?array
     {
-        $statement = 'SELECT * FROM produtos WHERE id = :id' ;
+        $statement = $this->cursor?->isConnected()->prepare(
+            'SELECT 
+            * 
+            FROM 
+            produtos 
+            WHERE 
+            id = :id'
+        );
 
-        $response = $this->cursor?->isConnected()->prepare($statement);
+        $statement->bindValue(':id', $id);
 
-        $response->bindValue(':id', $id);
+        $statement->execute();
 
-        $response->execute();
+        $response = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        return $response ?: null;
+    }
+    
+    public function readArrayProducts(string $atribute, array $data): ?array
+    {
+        $statement = $this->cursor?->isConnected()->prepare(
+            'SELECT 
+            * 
+            FROM 
+            produtos 
+            WHERE ' . $atribute . ' = :atribute'
+        );
 
-        $response = $response->fetch(PDO::FETCH_ASSOC);
+        $statement->bindValue(':atribute', $data[$atribute]);
+
+        $statement->execute();
+
+        $response = $statement->fetchAll(PDO::FETCH_ASSOC);
         
         return $response ?: null;
     }
