@@ -5,10 +5,6 @@
     
     $produtosCafe = Product::retrieveArrayProducts('tipo', ['tipo' => 'Café']);
     $produtosAlmoco = Product::retrieveArrayProducts('tipo', ['tipo' => 'Almoço']);
-
-    var_dump($produtosCafe);
-    var_dump($produtosAlmoco); 
-
 ?>
 
 <!doctype html>
@@ -44,11 +40,11 @@
                 <?php foreach ($produtosCafe as $cafe): ?>
                 <div class="container-produto">
                     <div class="container-foto">
-                        <img src="<?= $cafe['imagem']; ?>" alt="<?= $cafe['nome']; ?>">
+                        <img src="<?= $cafe->getImage(); ?>" alt="<?= $cafe->getName(); ?>">
                     </div>
-                    <p><?= $cafe['nome'] ?></p>
-                    <p><?= $cafe['descricao'] ?></p>
-                    <p><?= "R$ " . $cafe['preco'] ?></p>
+                    <p><?= $cafe->getName(); ?></p>
+                    <p><?= $cafe->getDescription(); ?></p>
+                    <p><?= "R$ " . $cafe->getPrice(); ?></p>
                 </div>
                 <?php endforeach; ?>
             </div>
@@ -62,11 +58,11 @@
                <?php foreach ($produtosAlmoco as $almoco): ?>
                 <div class="container-produto">
                     <div class="container-foto">
-                        <img src="<?= $almoco['imagem']; ?>" alt="<?= $almoco['nome']; ?>">
+                        <img src="<?= $almoco->getImage(); ?>" alt="<?php $almoco->getName(); ?>">
                     </div>
-                    <p><?= $almoco['nome'] ?></p>
-                    <p><?= $almoco['descricao'] ?></p>
-                    <p><?= "R$ " . $almoco['preco'] ?></p>
+                    <p><?= $almoco->getName(); ?></p>
+                    <p><?= $almoco->getDescription(); ?></p>
+                    <p><?= "R$ " . $almoco->getPrice(); ?></p>
                 </div>
                 <?php endforeach; ?>
             </div>

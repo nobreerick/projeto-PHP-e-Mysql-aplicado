@@ -64,4 +64,37 @@ class Product
         
         return null;
     }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getType(): string
+    {
+        return $this->tipo;
+    }
+
+    public function getName(): string
+    {
+        return $this->nome;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->descricao;
+    }
+
+    public function getImage(): string
+    {
+        return $this->imagem;
+    }
+    
+    public function getPrice(): float
+    {
+        $unformattedPrice = $this->preco;
+        $formattedPrice = (float) number_format($unformattedPrice, 2);
+        return $formattedPrice;
+    }
+
 }
