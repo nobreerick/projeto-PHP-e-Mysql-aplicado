@@ -1,6 +1,6 @@
 <?php 
     require_once 'vendor/autoload.php';
-    use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
+    
     use Nobreerick\MyphpsqlWeb\domain\models\Product;
     
     $produtosCafe = Product::retrieveArrayProducts('tipo', ['tipo' => 'Café']);
@@ -40,11 +40,11 @@
                 <?php foreach ($produtosCafe as $cafe): ?>
                 <div class="container-produto">
                     <div class="container-foto">
-                        <img src="<?= $cafe->getImage(); ?>" alt="<?= $cafe->getName(); ?>">
+                        <img src="<?= $cafe->getImageWithDirectory("img/"); ?>" alt="<?= $cafe->getName(); ?>">
                     </div>
                     <p><?= $cafe->getName(); ?></p>
                     <p><?= $cafe->getDescription(); ?></p>
-                    <p><?= "R$ " . $cafe->getPrice(); ?></p>
+                    <p><?= $cafe->getFormattedPrice(); ?></p>
                 </div>
                 <?php endforeach; ?>
             </div>
@@ -58,11 +58,11 @@
                <?php foreach ($produtosAlmoco as $almoco): ?>
                 <div class="container-produto">
                     <div class="container-foto">
-                        <img src="<?= $almoco->getImage(); ?>" alt="<?php $almoco->getName(); ?>">
+                        <img src="<?= $almoco->getImageWithDirectory("img/"); ?>" alt="<?php $almoco->getName(); ?>">
                     </div>
                     <p><?= $almoco->getName(); ?></p>
                     <p><?= $almoco->getDescription(); ?></p>
-                    <p><?= "R$ " . $almoco->getPrice(); ?></p>
+                    <p><?= $almoco->getFormattedPrice(); ?></p>
                 </div>
                 <?php endforeach; ?>
             </div>

@@ -81,6 +81,22 @@ class ProductsDao
         
         return $response ?: null;
     }
+
+    public function readAllProducts(): ?array
+    {
+        $statement = $this->cursor?->isConnected()->prepare(
+            'SELECT 
+            * 
+            FROM 
+            produtos'
+        );
+
+        $statement->execute();
+
+        $response = $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $response ?: null;
+    }
     
     public function updateProduct(string $atribute, array $data): bool
     {

@@ -5,12 +5,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
 
 $testData = [
-    'id' => 1, // ID do produto a ser atualizado
+    'id' => 4, // ID do produto a ser atualizado
     'tipo' => 'Café',
-    'nome' => 'Café Gelado',
-    'descricao' => 'Café gelado refrescante, adoçado e com notas sutis de baunilha ou caramelo.',
-    'imagem' => 'img/cafe-gelado.jpg',
-    'preco' => 1113.00
+    'nome' => 'Café Cremoso',
+    'descricao' => 'Café cremoso irresistivelmente suave e que envolve seu paladar',
+    'imagem' => 'img/cafe-cremoso.jpg',
+    'preco' => 5.50
 ];
 
 $testeProductDao = new ProductsDao();

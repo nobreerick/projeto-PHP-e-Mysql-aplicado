@@ -1,3 +1,11 @@
+<?php 
+    require_once 'vendor/autoload.php';
+    
+    use Nobreerick\MyphpsqlWeb\domain\models\Product;
+    
+    $produtos = Product::retrieveAllProducts();
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -32,50 +40,35 @@
           <th>Tipo</th>
           <th>Descricão</th>
           <th>Valor</th>
-          <th colspan="2">Ação</th>
+          <th colspan="2">Arquivo da imagem</th>
+          <th colspan="2">Ações</th>
         </tr>
       </thead>
       <tbody>
+      <?php foreach ($produtos as $produto): ?> 
       <tr>
-        <td>Bife</td>
-        <td>Almoço</td>
-        <td>Delicioso prato</td>
-        <td>R$ 25.00</td>
-        <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
+        <td><?=$produto->getName();?></td>
+        <td><?=$produto->getType();?></td>
+        <td><?=$produto->getDescription()?></td>
+        <td><?=$produto->getFormattedPrice()?></td>
+        <td>
+          <img 
+          src="<?= $produto->getImageWithDirectory("img/"); ?>" 
+          alt="<?= "Preview " . $produto->getName(); ?>"
+          width="100" height="100">
+        </td>
+        <td><?=$produto->getImage();?></td>
+        <td><a class="botao-editar" href="editar-produto.php">Editar</a></td>
         <td>
           <form>
             <input type="button" class="botao-excluir" value="Excluir">
           </form>
-        </td>
-        
+        </td>  
       </tr>
-      <tr>
-        <td>Frango</td>
-        <td>Almoço</td>
-        <td>Delicioso prato</td>
-        <td>R$ 25.00</td>
-        <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
-        <td>
-          <form>
-            <input type="button" class="botao-excluir" value="Excluir">
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td>Café Gelado</td>
-        <td>Café</td>
-        <td>Delicioso prato</td>
-        <td>R$ 25.00</td>
-        <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
-        <td>
-          <form>
-            <input type="button" class="botao-excluir" value="Excluir">
-          </form>
-        </td>
-      </tr>
+      <?php endforeach; ?>
       </tbody>
     </table>
-  <a class="botao-cadastrar" href="cadastrar-produto.html">Cadastrar produto</a>
+  <a class="botao-cadastrar" href="cadastrar-produto.php">Cadastrar produto</a>
   <form action="#" method="post">
     <input type="submit" class="botao-cadastrar" value="Baixar Relatório"/>
   </form>

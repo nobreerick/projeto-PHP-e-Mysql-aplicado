@@ -61,7 +61,21 @@ class Product
         2. array_map(): Aplica uma função a cada elemento do array $productsData e retorna um novo array com os resultados.
         3. fn($item) => new Product($item): É uma arrow function (função anônima) que recebe cada $item (um array associativo) e cria uma nova instância da classe Product, passando $item como argumento para o construtor.
         */
+        return null;
+    }
+
+    public static function retrieveAllProducts(): ?array
+    {
+        $productsDao = new ProductsDao();
+        $productsData = $productsDao->readAllProducts();
         
+        if ($productsData) {
+            return array_map(fn($item) => new Product($item), $productsData);
+        }
+        /*
+        2. array_map(): Aplica uma função a cada elemento do array $productsData e retorna um novo array com os resultados.
+        3. fn($item) => new Product($item): É uma arrow function (função anônima) que recebe cada $item (um array associativo) e cria uma nova instância da classe Product, passando $item como argumento para o construtor.
+        */
         return null;
     }
 
@@ -84,17 +98,19 @@ class Product
     {
         return $this->descricao;
     }
-
+    
     public function getImage(): string
     {
         return $this->imagem;
     }
     
-    public function getPrice(): float
+    public function getImageWithDirectory(string $directory): string
     {
-        $unformattedPrice = $this->preco;
-        $formattedPrice = (float) number_format($unformattedPrice, 2);
-        return $formattedPrice;
+        return $directory . $this->imagem;
     }
 
+    public function getFormattedPrice(): string
+    {
+        return "R$ " . number_format($this->preco, 2, ',', '.');
+    }
 }
