@@ -25,8 +25,16 @@ class ProductsDao
 
     public function createProduct(array $data): bool
     {
-        $this->validateData($data);
-        
+        try {
+            $this->validateData($data);
+        }
+
+        catch (InvalidArgumentException $e) {
+            throw new InvalidArgumentException("Erro de validação: " . $e->getMessage());
+            exit;
+        }
+      
+
         $statement = $this->cursor?->isConnected()->prepare(
             'INSERT INTO produtos (tipo, nome, descricao, imagem, preco) VALUES (:tipo, :nome, :descricao, :imagem, :preco)'
         );

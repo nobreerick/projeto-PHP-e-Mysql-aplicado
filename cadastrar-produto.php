@@ -1,3 +1,25 @@
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
+
+$productDao = new ProductsDao();
+
+if ($_POST!=[]) {
+    $data = [
+        'id' => '0', 
+        'tipo' => $_POST['tipo'],
+        'nome' => $_POST['nome'],
+        'descricao' => $_POST['descricao'],
+        'imagem' => "logo-serenatto.png",
+        'preco' => (float) $_POST['preco']
+    ];
+
+        $success = $productDao->createProduct($data);
+}
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -24,7 +46,8 @@
         <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
     </section>
     <section class="container-form">
-        <form action="#">
+        <form method="post" >
+            <input type="hidden" name="id" value="0">
 
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
@@ -49,6 +72,8 @@
 
             <input type="submit" name="cadastro" class="botao-cadastrar" value="Cadastrar produto"/>
         </form>
+
+        <button class="botao-cadastrar" onclick="window.location.href='admin.php'">Voltar</button>
     
     </section>
 </main>

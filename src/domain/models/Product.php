@@ -8,7 +8,7 @@ use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
 
 class Product
 {
-    private int $id; 
+    private ?int $id; 
     private string $tipo; 
     private string $nome; 
     private string $descricao; 
@@ -103,7 +103,7 @@ class Product
     {
         return $this->imagem;
     }
-    
+
     public function getImageWithDirectory(string $directory): string
     {
         return $directory . $this->imagem;
