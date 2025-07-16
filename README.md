@@ -1,10 +1,10 @@
 # projeto-PHP-e-Mysql-aplicado
 Projeto adaptado do projeto guia do curso de PHP e MYSQL para WEB da plataforma ALURA.
 
-Premissa:
+## Premissa:
 - Site Web do empreendimento Serenatto Café, que implementa um cardápio online, tela de login, área de administrador, e gerenciamento de produtos.
 
-Como usar esse repositório:
+## Como usar esse repositório:
 
 1- Edite o arquivo .env-template, adicionando informações personalizadas ao seu propósito;
 
@@ -16,9 +16,7 @@ Como usar esse repositório:
 
 4- Rodar pelo container do PHP o comando "php -S localhost:8080" isso criará uma instância de um servidor web do projeto, e tornará acessível de um navegador do host o acesso à aplicação pelo endereço localhost:8080
 
-
-
-Pontos interessantes aplicado até o momento nesse exercício:
+## Pontos interessantes aplicado até o momento nesse exercício:
 - utilização de containers para rodar o projeto;
 - utilização de variáveis de ambiente para proteger dados sensiveis de produção;
 - utilização do PHP composer para gerenciar dependências e instanciar o arquivo de autoload;
