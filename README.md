@@ -5,6 +5,7 @@ Premissa:
 - Site Web do empreendimento Serenatto Café, que implementa um cardápio online, tela de login, área de administrador, e gerenciamento de produtos.
 
 Como usar esse repositório:
+
 1- Edite o arquivo .env-template, adicionando informações personalizadas ao seu propósito;
 
 2- Renomei o arquivo .env-template para .env
