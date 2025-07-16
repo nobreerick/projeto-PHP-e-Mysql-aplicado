@@ -10,7 +10,7 @@ Como usar esse repositório:
 
 2- Renomei o arquivo .env-template para .env
 
-3- Rodar o script "rodarPho.sh" ou usar os comandos desse arquivo individualmente para levantar os containers;
+3- Rodar o script "rodarPhp.sh" ou usar os comandos desse arquivo individualmente para levantar os containers;
 
 3.1- atenção: foram reservadas as portas 8001, 8080 e 3309 para esse projeto, importante verificar se não existem conflitos delas com outros projetos ou aplicações. Caso haja, alterar o arquivo "docker-comose.yml" na seção ports do container "bd" e "php";
 
