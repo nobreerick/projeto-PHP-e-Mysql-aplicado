@@ -30,11 +30,8 @@ class ProductsDao
         }
 
         catch (InvalidArgumentException $e) {
-            throw new InvalidArgumentException("Erro de validação: " . $e->getMessage());
-            exit;
+            echo "Erro de validação: " . $e->getMessage();
         }
-      
-
         $statement = $this->cursor?->isConnected()->prepare(
             'INSERT INTO produtos (tipo, nome, descricao, imagem, preco) VALUES (:tipo, :nome, :descricao, :imagem, :preco)'
         );
@@ -47,7 +44,6 @@ class ProductsDao
         if (!$success) {
             throw new PDOException("Erro ao inserir o produto: " . implode(", ", $statement->errorInfo()));
         }
-
         return $success;
     }
 
@@ -108,7 +104,11 @@ class ProductsDao
     
     public function updateProduct(string $atribute, array $data): bool
     {
+        var_dump($data);
+        echo "validando dados... \n";
         $this->validateData($data);
+        echo "dados validados com sucesso! \n";
+
 
         $statement = $this->cursor?->isConnected()->prepare(
             'UPDATE 
@@ -152,13 +152,20 @@ class ProductsDao
 
     public function validateData(array $data): bool
     {
+        echo "entrou na validação dos dados... \n";
         foreach ($data as $key => $value) {
+            echo "Validando o campo '$key' com o valor '$value'... \n";
+            if ($key === 'id' && $value === "0") {
+                continue; // O campo 'id' pode ser 0 ou um número positivo
+            }
             if (empty($value)) {
                 throw new InvalidArgumentException("O campo '$key' não pode estar vazio.");
+                echo "Erro: O campo '$key' não pode estar vazio.";
             }  
         }
         if (!is_numeric($data['preco']) || $data['preco'] <= 0) {
             throw new InvalidArgumentException("O campo 'preço' deve ser um número positivo.");
+            echo "Erro: O campo 'preço' deve ser um número positivo.";
         }
         return true;
     }

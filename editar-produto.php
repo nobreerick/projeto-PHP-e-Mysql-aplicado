@@ -1,3 +1,38 @@
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Nobreerick\MyphpsqlWeb\domain\models\Product;
+use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
+
+$id = (int) $_POST["id"];
+$product = Product::retrieveProductById($id);
+
+$nome = $_POST["nome"] === '' ? $product->getName() : $_POST["nome"] ?? $product->getName();
+$tipo = $_POST["tipo"] === '' ? $product->getType() : $_POST["tipo"] ?? $product->getType();
+$descricao = $_POST["descricao"] === '' ? $product->getDescription() : $_POST["descricao"] ?? $product->getDescription();
+$imagem = $_POST["imagem"] === '' ? $product->getImage() : $_POST["imagem"] ?? $product->getImage();
+$preco = $_POST["preco"] === '' ? $product->getPrice() : (float) $_POST["preco"] ?? $product->getPrice();
+
+if (isset($_POST["editar"])) {
+    $productData = [
+      'id' => $id,
+      'nome' => $nome,
+      'tipo' => $tipo,
+      'descricao' => $descricao,
+      'imagem' => $imagem,
+      'preco' => $preco
+    ];
+    $productsDao = new ProductsDao();
+    $success = $productsDao->updateProduct('id', $productData);
+    if (!$success) {
+      echo "Erro ao editar o produto.";
+    }
+    header("Location: admin.php");
+    exit();
+}
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -24,33 +59,40 @@
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form action="#">
+    <form method="post">
+      <input type="hidden" name="id" value="<?= $_POST["id"] ?>">
 
       <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+      <input type="text" id="nome" name="nome" placeholder="<?= $product->getName() ?>">
 
-      <div class="container-radio">
+      <div class="container-radio" >
         <div>
             <label for="cafe">Café</label>
-            <input type="radio" id="cafe" name="tipo" value="Café" checked>
+            <input type="radio" id="cafe" name="tipo" value="Café" 
+            <?= $product->getType() === 'Café' ? 'checked' : '' ?>
+            >
         </div>
         <div>
             <label for="almoco">Almoço</label>
-            <input type="radio" id="almoco" name="tipo" value="Almoço">
+            <input type="radio" id="almoco" name="tipo" value="Almoço"
+            <?= $product->getType() === 'Almoço' ? 'checked' : '' ?> 
+            >
         </div>
     </div>
 
       <label for="descricao">Descrição</label>
-      <input type="text" id="descricao" name="descricao" placeholder="Digite uma descrição" required>
+      <input type="text" id="descricao" name="descricao" placeholder="<?= $product->getDescription() ?>">
 
       <label for="preco">Preço</label>
-      <input type="text" id="preco" name="preco" placeholder="Digite uma descrição" required>
+      <input type="text" id="preco" name="preco" placeholder="<?= $product->getFormattedPrice() ?>">
 
       <label for="imagem">Envie uma imagem do produto</label>
-      <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
+      <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="<?= $product->getImage() ?>">
 
       <input type="submit" name="editar" class="botao-cadastrar"  value="Editar produto"/>
     </form>
+
+    <button class="botao-cadastrar" onclick="window.location.href='admin.php'">Voltar</button>
 
   </section>
 </main>

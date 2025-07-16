@@ -104,6 +104,11 @@ class Product
         return $this->imagem;
     }
 
+    public function getPrice(): float
+    {
+        return $this->preco;
+    }
+
     public function getImageWithDirectory(string $directory): string
     {
         return $directory . $this->imagem;

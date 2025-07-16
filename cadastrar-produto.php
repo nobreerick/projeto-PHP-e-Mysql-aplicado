@@ -16,7 +16,8 @@ if ($_POST!=[]) {
         'preco' => (float) $_POST['preco']
     ];
 
-        $success = $productDao->createProduct($data);
+        $productDao->createProduct($data);
+        header("Location: admin.php");
 }
 ?>
 

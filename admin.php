@@ -58,11 +58,16 @@
           width="100" height="100">
         </td>
         <td><?=$produto->getImage();?></td>
-        <td><a class="botao-editar" href="editar-produto.php">Editar</a></td>
+        <td>
+          <form action="./editar-produto.php" method="POST">
+            <input type="hidden" name="id" value="<?=$produto->getId();?>">
+            <button type="submit" class="botao-cadastrar" value="Editar">Editar</button>
+          </form>
+        <!--  <a class="botao-editar" href="editar-produto.php">Editar</a></td>-->
         <td>
           <form action="excluir-produto.php" method="post"> 
             <input type="hidden" name="id" value="<?=$produto->getId();?>">
-            <input type="submit" class="botao-excluir" value="Excluir">
+            <input type="submit" class="botao-cadastrar" value="Excluir" style="color: red;">
           </form>
         </td>  
       </tr>
