@@ -1,8 +1,36 @@
-<?php 
+<?php
+require_once __DIR__ . '/vendor/autoload.php';
 
+use Nobreerick\MyphpsqlWeb\infra\dao\UsersDao;
 
+$userDao = new UsersDao();
+
+if(isset($_POST['criar'])) {
+
+    $data = [
+        "nome" => $_POST['nome'],
+        "email" => $_POST['email'],
+        "senha" => $_POST['password'],
+    ];
+
+    try {
+      if($_POST['password'] !== $_POST['repassword']) {
+          throw new InvalidArgumentException("As senhas não coincidem.");
+      }
+    } catch (InvalidArgumentException $e) {
+        echo "<script>alert('Erro: " . $e->getMessage() . "');</script>";
+        exit;
+    }
+
+    $success = $userDao->createUser($data);
+    if (!$success) {
+      echo "<script>alert('Erro ao criar usuário.');</script>";
+      exit;
+    }
+    echo "<script>alert('Usuário criado com sucesso!');</script>";
+    header("Location: login.php");
+}
 ?>
-
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -25,25 +53,25 @@
 <main>
   <section class="container-admin-banner">
     <img src="img/logo-serenatto-horizontal.png" class="logo-admin" alt="logo-serenatto">
-    <h1>Login Serenatto</h1>
+    <h1>Novo usuário Serenatto</h1>
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-  <form action="#">
+  <form method="post">
     
-    <label for="nome">E-mail</label>
-    <input type="text" id="nome" placeholder="Digite o seu nome" required>
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" name="nome" placeholder="Digite o seu nome" required>
     
     <label for="email">E-mail</label>
-    <input type="email" id="email" placeholder="Digite o seu e-mail" required>
+    <input type="email" id="email" name="email" placeholder="Digite o seu e-mail" required>
 
     <label for="password">Senha</label>
-    <input type="password" id="password" placeholder="Digite a sua senha" required>
+    <input type="password" id="password" name="password" placeholder="Digite a sua senha" required>
 
     <label for="repassword">Repetir Senha</label>
-    <input type="password" id="repassword" placeholder="Digite a sua senha novamente" required>
+    <input type="password" id="repassword" name="repassword" placeholder="Digite a sua senha novamente" required>
 
-    <input type="submit" class="botao-cadastrar" value="Entrar"/>
+    <input type="submit" class="botao-cadastrar" name="criar" value="Criar"/>
   </form>
   <button class="botao-cadastrar" onclick="window.location.href='login.php'">Voltar</button>
   </section>
@@ -52,12 +80,3 @@
 </html>
 
 
-<!--
-id INT AUTO_INCREMENT PRIMARY KEY,
-nome VARCHAR(100) NOT NULL,
-email VARCHAR(100) NOT NULL,
-senha VARCHAR(255) NOT NULL,
-data_criacao TIMESTAMP,
-data_modificacao TIMESTAMP,
-ativo BOOLEAN DEFAULT FALSE
--->

@@ -30,6 +30,10 @@
                 <img src="img/logo-serenatto.png" class="logo" alt="logo-serenatto">
             </div>
         </section>
+        <div>
+            <button style="background-color: #EBC181; color: #333B1E;
+    font-weight: 600; border: none; padding: 30px 70px; cursor: pointer; border-radius: 5px; position: relative; left: 100%; transform: translateX(-100%); font-size: 1.5rem;" onclick="window.location.href='login.php'">Log in</button>
+        </div>
         <h2>Cardápio Digital</h2>
         <section class="container-cafe-manha">
             <div class="container-cafe-manha-titulo">

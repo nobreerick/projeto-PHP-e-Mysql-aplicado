@@ -31,7 +31,13 @@ class UsersDao
         }
         catch (InvalidArgumentException $e) {
             echo "Erro de validação: " . $e->getMessage();
-            exit;
+            return false;
+        }
+        try {
+            $this->validateUserAlreadyExists($data);
+        } catch (InvalidArgumentException $e) {
+            echo "Erro de validação: " . $e->getMessage();
+            return false;
         }
 
         $passwordHash = hash('sha256', $data['senha']);
@@ -205,15 +211,33 @@ class UsersDao
         $statement->bindValue(':email', $email);
         $statement->execute();
         $count = $statement->fetchColumn();
+        echo "chegou até aqui";
         if ($count <= 0) {
-            throw new InvalidArgumentException("Senha ou Email inválido.");
+            echo "entrou no if";
             return false;    
+            //throw new InvalidArgumentException("Senha ou Email inválido.");
         }
         try {
             $this->validateUserIsActive($data);
         } catch (InvalidArgumentException $e) {
-            echo "Erro de validação: " . $e->getMessage();
             return false;   
+        }
+        return true;
+    }
+
+    public function validateUserAlreadyExists(array $data): bool
+    {
+        $email = $data['email'];
+        $statement = $this->cursor?->isConnected()->prepare(
+            'SELECT COUNT(*) FROM usuarios WHERE email = :email'
+        );
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+        $count = $statement->fetchColumn();
+
+        if ($count > 0) {
+            throw new InvalidArgumentException("Usuário já existe.\n");
+            return false;
         }
         return true;
     }
@@ -221,9 +245,10 @@ class UsersDao
     public function updateUserActiveFlagById(int $id): bool
     {
         $statement = $this->cursor?->isConnected()->prepare(
-            'UPDATE usuarios SET ativo = NOT ativo WHERE id = :id'
+            'UPDATE usuarios SET ativo = NOT ativo, data_modificacao = :data_modificacao WHERE id = :id'
         );
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->bindValue(':data_modificacao', date('Y-m-d H:i:s'));
         $success = $statement->execute();
 
         if (!$success) {

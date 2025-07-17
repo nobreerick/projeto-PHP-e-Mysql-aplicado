@@ -24,20 +24,21 @@
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-  <form action="#">
+  <form id="formAcesso" action="./validar-acesso.php" method="POST">
 
     <label for="email">E-mail</label>
-    <input type="email" id="email" placeholder="Digite o seu e-mail" required>
+    <input type="email" id="email" name="email" placeholder="Digite o seu e-mail" required>
 
     <label for="password">Senha</label>
-    <input type="password" id="password" placeholder="Digite a sua senha" required>
+    <input type="password" id="password" name="password" placeholder="Digite a sua senha" required>
 
-    <input type="submit" class="botao-cadastrar" value="Entrar"/>
+    <input type="submit" class="botao-cadastrar" name="entrar" value="Entrar"/>
   </form>
   </section>
-  <form action="newuser.php">
-    <button type="submit" class="botao-cadastrar" value="NovoUsuario">Novo Usuário</button>
-  </form>
+  <div class="container-form">
+    <button type="button" class="botao-cadastrar" value="NovoUsuario" onclick="window.location.href='newuser.php'">Novo Usuário</button>
+    <button class="botao-cadastrar" onclick="window.location.href='index.php'">Voltar</button>
+  </div>
 </main>
 </body>
 </html>

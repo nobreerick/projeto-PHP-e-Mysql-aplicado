@@ -6,7 +6,7 @@ use Nobreerick\MyphpsqlWeb\infra\dao\UsersDao;
 
 $testUserDao = new UsersDao();
 
-$id = 2;
+$id = 7;
 
 $success = $testUserDao->updateUserActiveFlagById($id);
 

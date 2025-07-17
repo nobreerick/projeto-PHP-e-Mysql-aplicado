@@ -6,11 +6,11 @@ use Nobreerick\MyphpsqlWeb\infra\dao\UsersDao;
 
 $testUserDao = new UsersDao();
 
-$id = 5;
+$id = 2;
 
 $testData = [
-    'nome' => 'Kalel Jaime',
-    'email' => 'kal.el.jaime@example.com',
+    'nome' => 'Fulano Fobre',
+    'email' => 'fulaninhofobrinho@gmail.com',
     'senha' => 'SenhaForte123!'
 ];
 
