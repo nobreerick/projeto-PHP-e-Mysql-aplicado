@@ -1,6 +1,7 @@
 services:
   bd:
     image: mysql:8.0
+    container_name: serenatto_bd
     environment:
       MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
       MYSQL_DATABASE: my_db

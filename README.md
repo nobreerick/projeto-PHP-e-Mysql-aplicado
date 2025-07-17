@@ -4,6 +4,10 @@ Projeto adaptado do projeto guia do curso de PHP e MYSQL para WEB da plataforma 
 ## Premissa:
 - Site Web do empreendimento Serenatto Café, que implementa um cardápio online, tela de login, área de administrador, e gerenciamento de produtos.
 
+## Pré-requisitos
+Docker latest;
+Docker-compose latest;
+
 ## Como usar esse repositório:
 
 1- Edite o arquivo .env-template, adicionando informações personalizadas ao seu propósito;
@@ -14,7 +18,11 @@ Projeto adaptado do projeto guia do curso de PHP e MYSQL para WEB da plataforma 
 
 3.1- atenção: foram reservadas as portas 8001, 8080 e 3309 para esse projeto, importante verificar se não existem conflitos delas com outros projetos ou aplicações. Caso haja, alterar o arquivo "docker-comose.yml" na seção ports do container "bd" e "php";
 
-4- Rodar pelo container do PHP o comando "php -S localhost:8080" isso criará uma instância de um servidor web do projeto, e tornará acessível de um navegador do host o acesso à aplicação pelo endereço localhost:8080
+4- Executar o comando "docker exec serenatto_bd mysql -u root -p < DBconfig.sql"
+
+4.1- Troque root pelo seu usuário MySQL, se necessário.
+
+5- Rodar pelo container do PHP o comando "php -S localhost:8080" isso criará uma instância de um servidor web do projeto, e tornará acessível de um navegador do host o acesso à aplicação pelo endereço localhost:8080
 
 ## Pontos interessantes aplicado até o momento nesse exercício:
 - utilização de containers para rodar o projeto;
@@ -25,6 +33,7 @@ Projeto adaptado do projeto guia do curso de PHP e MYSQL para WEB da plataforma 
 - utilização de estrutura de pastas e convençoes da PSR-4 do PHP;
 - tentativa de utilização dos princípios do Object Calisthenics na escrita do código;
 - construção dos testes unitários para grande parte das funções e métodos;
+- utilização de conhecimentos de banco de dados e linguagem SQL: DML e DDL;
 - Contexto replicável em qualquer situação:
     - Página inicial dinâmica;
     - Página de Login funcional;
@@ -32,6 +41,7 @@ Projeto adaptado do projeto guia do curso de PHP e MYSQL para WEB da plataforma 
     - Páginas de ação;
 
 Pontos que poderão ser aplicados:
+- criação de uma página (ou tabela) de administração de usuários;
 - Integração com alguma ferramenta Linter (possívelmente PHP_CodeSniffer) para estilização de código e criação de dependência de desenvolvimento;
 - Integração com PHPUnit para iniciar processo de Continuos Integration na área de testes automatizados;
 
