@@ -11,7 +11,7 @@ services:
     volumes:
       - bd_data:/var/lib/mysql
     networks:
-      - serenato
+      - serenatto
   php:
     build: .
     container_name: php_container
@@ -22,12 +22,12 @@ services:
     volumes:
       - .:/var/www/app
     networks:
-      - serenato
+      - serenatto
     depends_on:
       - bd
 
 networks:
-  serenato:
+  serenatto:
 
 volumes:
   bd_data:

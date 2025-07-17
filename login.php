@@ -34,8 +34,10 @@
 
     <input type="submit" class="botao-cadastrar" value="Entrar"/>
   </form>
-
   </section>
+  <form action="newuser.php">
+    <button type="submit" class="botao-cadastrar" value="NovoUsuario">Novo Usuário</button>
+  </form>
 </main>
 </body>
 </html>

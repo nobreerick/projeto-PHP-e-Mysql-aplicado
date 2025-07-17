@@ -26,12 +26,13 @@ class ProductsDao
     public function createProduct(array $data): bool
     {
         try {
-            $this->validateData($data);
+            $this->validateProductData($data);
         }
 
         catch (InvalidArgumentException $e) {
             echo "Erro de validação: " . $e->getMessage();
         }
+
         $statement = $this->cursor?->isConnected()->prepare(
             'INSERT INTO produtos (tipo, nome, descricao, imagem, preco) VALUES (:tipo, :nome, :descricao, :imagem, :preco)'
         );
@@ -106,7 +107,7 @@ class ProductsDao
     {
         var_dump($data);
         echo "validando dados... \n";
-        $this->validateData($data);
+        $this->validateProductData($data);
         echo "dados validados com sucesso! \n";
 
 
@@ -150,7 +151,7 @@ class ProductsDao
         return $success;
     }
 
-    public function validateData(array $data): bool
+    public function validateProductData(array $data): bool
     {
         echo "entrou na validação dos dados... \n";
         foreach ($data as $key => $value) {

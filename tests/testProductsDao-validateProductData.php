@@ -14,4 +14,4 @@ $testData = [
 
 $testeProductDao = new ProductsDao();
 
-echo $testeProductDao->validateData($testData) . "\n";
+echo $testeProductDao->validateProductData($testData) . "\n";
