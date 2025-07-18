@@ -19,7 +19,7 @@ if (isset($_POST['cadastro'])) {
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK){
         echo "Arquivo enviado: " . $_FILES['imagem']['name'] . "\n";
         $file = $_FILES['imagem'];
-        $fileName = $file['name'];
+        $fileName = uniqId() . $file['name'];
         $fileTmpName = $file['tmp_name'];
         $fileSize = $file['size'];
         $fileError = $file['error'];

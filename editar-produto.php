@@ -26,7 +26,7 @@ if (isset($_POST["editar"])) {
     
     if(isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
       $file = $_FILES['imagem'];
-      $fileName = $file['name'];
+      $fileName = uniqid() . $file['name'];
       $fileTmpName = $file['tmp_name'];
       $fileSize = $file['size'];
       $fileError = $file['error'];
