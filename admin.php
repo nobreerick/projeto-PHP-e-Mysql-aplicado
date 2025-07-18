@@ -2,8 +2,11 @@
     require_once 'vendor/autoload.php';
     
     use Nobreerick\MyphpsqlWeb\domain\models\Product;
+    use Nobreerick\MyphpsqlWeb\domain\models\User;
     
     $produtos = Product::retrieveAllProducts();
+
+    $usuarios = User::retrieveAllUsers();
 ?>
 
 <!doctype html>
@@ -24,15 +27,15 @@
   <title>Serenatto - Admin</title>
 </head>
 <body>
-<main>
-  <section class="container-admin-banner">
-    <img src="img/logo-serenatto-horizontal.png" class="logo-admin" alt="logo-serenatto">
-    <h1>Admistração Serenatto</h1>
-    <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
-  </section>
-  <h2>Lista de Produtos</h2>
-
-  <section class="container-table">
+  <main>
+    <section class="container-admin-banner">
+      <img src="img/logo-serenatto-horizontal.png" class="logo-admin" alt="logo-serenatto">
+      <h1>Admistração Serenatto</h1>
+      <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
+    </section>
+    <button class="botao-cadastrar" id="btn-produtos">Lista de Produtos</button>
+    <button class="botao-cadastrar" id="btn-usuarios">Lista de Usuários</button>
+  <section class="container-table" id="tabela-produtos">
     <table>
       <thead>
         <tr>
@@ -74,11 +77,99 @@
       <?php endforeach; ?>
       </tbody>
     </table>
-  <a class="botao-cadastrar" href="cadastrar-produto.php">Cadastrar produto</a>
+  <a class="botao-cadastrar" id="cadastrar-produto" href="cadastrar-produto.php">Cadastrar produto</a>
   <form action="#" method="post">
-    <input type="submit" class="botao-cadastrar" value="Baixar Relatório"/>
+    <input type="submit" id="relatorio-produtos" class="botao-cadastrar" value="Baixar Relatório de Produtos"/>
   </form>
   </section>
+  <section class="container-table" id="tabela-usuarios">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Data de criação</th>
+          <th>Data de modificação</th>
+          <th>Status</th>
+          <th colspan="3">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php foreach ($usuarios as $usuario): ?> 
+      <tr>
+        <td><?=$usuario->getName();?></td>
+        <td><?=$usuario->getEmail();?></td>
+        <td><?=$usuario->getCreationDate()?></td>
+        <td><?=$usuario->getModifyDate()?></td>
+        <td><?=$usuario->getIsActive() ? 'Ativo' : 'Inativo'?></td>
+        <td>
+          <form action="./editar-usuario.php" method="POST">
+            <input type="hidden" name="id" value="<?=$usuario->getId();?>">
+            <button type="submit" class="botao-cadastrar" name="editar" value="Editar">Editar</button>
+          </form>
+        </td>
+        <td>
+          <form action="./editar-usuario.php" method="post"> 
+            <input type="hidden" name="id" value="<?=$usuario->getId();?>">
+            <button type="submit" class="botao-cadastrar" name="alterarStatus" value="Alterar Status">Alterar Status</button>
+          </form>
+        </td>   
+        <td>
+          <form action="./excluir-usuario.php" method="post"> 
+            <input type="hidden" name="id" value="<?=$usuario->getId();?>">
+            <button type="submit" class="botao-cadastrar" name="excluir" value="Excluir" style="color: red;">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+    <form action="cadastrar-usuario.php" method="post">
+      <input type="hidden" name="Url-Origem" value="admin.php">
+      <input class="botao-cadastrar" id="cadastrar-usuario" type="submit" name="cadastrar-usuario" value="Cadastrar Usuário">
+    </form>
+  <form action="#" method="post">
+    <input type="submit" id="relatorio-usuarios" class="botao-cadastrar" value="Baixar Relatório de Usuários"/>
+  </form>
+</section>
 </main>
 </body>
 </html>
+
+<script>
+  const btnProdutos = document.getElementById('btn-produtos');
+  const btnUsuarios = document.getElementById('btn-usuarios');
+  const tabelaProdutos = document.getElementById('tabela-produtos');
+  const tabelaUsuarios = document.getElementById('tabela-usuarios');
+  const cadastrarProduto = document.getElementById('cadastrar-produto');
+  const relatorioProdutos = document.getElementById('relatorio-produtos');
+  const cadastrarUsuario = document.getElementById('cadastrar-usuario');
+  const relatorioUsuarios = document.getElementById('relatorio-usuarios');
+
+  // Inicialmente mostra apenas produtos
+  tabelaProdutos.style.display = 'block';
+  tabelaUsuarios.style.display = 'none';
+  cadastrarProduto.style.display = 'inline-block';
+  relatorioProdutos.style.display = 'inline-block';
+  cadastrarUsuario.style.display = 'none';
+  relatorioUsuarios.style.display = 'none';
+
+  btnProdutos.addEventListener('click', function() {
+    tabelaProdutos.style.display = 'block';
+    tabelaUsuarios.style.display = 'none';
+    cadastrarProduto.style.display = 'inline-block';
+    relatorioProdutos.style.display = 'inline-block';
+    cadastrarUsuario.style.display = 'none';
+    relatorioUsuarios.style.display = 'none';
+  });
+
+  btnUsuarios.addEventListener('click', function() {
+    tabelaProdutos.style.display = 'none';
+    tabelaUsuarios.style.display = 'block';
+    cadastrarProduto.style.display = 'none';
+    relatorioProdutos.style.display = 'none';
+    cadastrarUsuario.style.display = 'inline-block';
+    relatorioUsuarios.style.display = 'inline-block';
+  });
+</script>
+

@@ -36,7 +36,12 @@
   </form>
   </section>
   <div class="container-form">
-    <button type="button" class="botao-cadastrar" value="NovoUsuario" onclick="window.location.href='newuser.php'">Novo Usuário</button>
+  <form action="cadastrar-usuario.php" method="post">
+    <input type="hidden" name="Url-Origem" value="login.php">
+    <input class="botao-cadastrar" id="cadastrar-usuario" type="submit" name="cadastrar-usuario" value="Novo Usuário">
+  </form>
+  </div>
+  <div class="container-form">
     <button class="botao-cadastrar" onclick="window.location.href='index.php'">Voltar</button>
   </div>
 </main>

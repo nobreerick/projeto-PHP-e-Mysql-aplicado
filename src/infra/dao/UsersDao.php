@@ -28,13 +28,6 @@ class UsersDao
     {
         try {
             $this->validateUserData($data);
-        }
-        catch (InvalidArgumentException $e) {
-            echo "Erro de validação: " . $e->getMessage();
-            return false;
-        }
-        try {
-            $this->validateUserAlreadyExists($data);
         } catch (InvalidArgumentException $e) {
             echo "Erro de validação: " . $e->getMessage();
             return false;
@@ -93,28 +86,56 @@ class UsersDao
         return $response ?: null;
     }
 
-    public function updateUser(int $id, array $data): bool
+    public function updateUserData(int $id, array $data): bool
     {
         try {
-            $this->validateUserData($data);
+            echo "entrou no updateUserData" . "\n";
+            echo "id: " . $id . "\n";
+            var_dump($data);
+            echo "\n" . "-------------------------------------------------------------------------------\n";
+            $this->validateUserName($data);
+            echo "validou o nome" . "\n";
+            $this->validateUserEmail($data);
+            echo "validou o email" . "\n";
         } catch (InvalidArgumentException $e) {
             echo "Erro de validação: " . $e->getMessage();
-            exit;
+            return false;
         }
 
-        $passwordHash = hash('sha256', $data['senha']);
-
         $statement = $this->cursor?->isConnected()->prepare(
-            'UPDATE usuarios SET nome = :nome, email = :email, senha = :senha, data_modificacao = :data_modificacao WHERE id = :id'
+            'UPDATE usuarios SET nome = :nome, email = :email, data_modificacao = :data_modificacao WHERE id = :id'
         );
         $statement->bindValue(':nome', $data['nome']);
         $statement->bindValue(':email', $data['email']);
-        $statement->bindValue(':senha', $passwordHash);
         $statement->bindValue(':data_modificacao', date('Y-m-d H:i:s'));
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $success = $statement->execute();
         if (!$success) {
             throw new PDOException("Erro ao atualizar o usuário: " . implode(", ", $statement->errorInfo()));
+        }
+        return $success;
+    }
+
+    public function updateUserPassword(int $id, string $newPassword): bool
+    {
+        try{
+            $this->validateUserPassword(['senha' => $newPassword]);
+        } catch (InvalidArgumentException $e) {
+            echo "Erro de validação: " . $e->getMessage();
+            exit;   
+        }    
+        
+        $passwordHash = hash('sha256', $newPassword);
+
+        $statement = $this->cursor?->isConnected()->prepare(
+            'UPDATE usuarios SET senha = :senha, data_modificacao = :data_modificacao WHERE id = :id'
+        );
+        $statement->bindValue(':senha', $passwordHash);
+        $statement->bindValue(':data_modificacao', date('Y-m-d H:i:s'));
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $success = $statement->execute();
+        if (!$success) {
+            throw new PDOException("Erro ao atualizar a senha do usuário: " . implode(", ", $statement->errorInfo()));
         }
         return $success;
     }
@@ -134,8 +155,58 @@ class UsersDao
 
     public function validateUserData(array $data): bool
     {
-        if (empty($data['email']) || empty($data['senha']) || empty($data['nome'])) {
+        if (empty($data['nome']) || empty($data['email']) || empty($data['senha'])) {
             throw new InvalidArgumentException("Nome, email e senha são obrigatórios.");
+            return false;
+        }
+
+        $this->validateUserName($data);
+        $this->validateUserEmail($data);
+        $this->validateUserPassword($data);
+        $this->validateUserDatesData($data);
+        $this->validateUserIsActive($data);
+
+        return true;
+    }
+
+    public function validateUserName(array $data): bool
+    {
+        if (empty($data['nome'])) {
+            throw new InvalidArgumentException("O nome é obrigatório.");
+            return false;
+        }
+
+        $nameRegex = '/^[a-zA-ZÀ-ÿ\s]+$/u';
+        
+        if (!preg_match($nameRegex, $data['nome'])) {
+            throw new InvalidArgumentException("O nome deve conter apenas letras e espaços.");
+            return false;
+        }
+
+        return true;       
+    }
+
+    public function validateUserEmail(array $data): bool
+    {
+        if (empty($data['email'])) {
+            throw new InvalidArgumentException("Email éo obrigatório.");
+            return false;
+        }
+
+        $emailRegex = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+        
+        if (!preg_match($emailRegex, $data['email'])) {
+            throw new InvalidArgumentException("O email deve ser válido.");
+            return false;
+        }
+
+        return true;       
+    }
+
+    public function validateUserPassword(array $data): bool
+    {
+        if (empty($data['senha'])) {
+            throw new InvalidArgumentException("A senha é obrigatória.");
             return false;
         }
 
@@ -146,15 +217,7 @@ class UsersDao
             return false;
         }
 
-        
-        $emailRegex = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
-        
-        if (!preg_match($emailRegex, $data['email'])) {
-            throw new InvalidArgumentException("O email deve ser válido.");
-            return false;
-        }
-
-        return true;       
+        return true;
     }
 
     public function validateUserDatesData(array $data): bool
@@ -211,9 +274,7 @@ class UsersDao
         $statement->bindValue(':email', $email);
         $statement->execute();
         $count = $statement->fetchColumn();
-        echo "chegou até aqui";
         if ($count <= 0) {
-            echo "entrou no if";
             return false;    
             //throw new InvalidArgumentException("Senha ou Email inválido.");
         }
@@ -253,6 +314,7 @@ class UsersDao
 
         if (!$success) {
             throw new PDOException("Erro ao atualizar o status do usuário: " . implode(", ", $statement->errorInfo()));
+        return false;
         }
 
         return $success;

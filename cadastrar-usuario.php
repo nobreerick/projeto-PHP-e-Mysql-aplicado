@@ -5,30 +5,37 @@ use Nobreerick\MyphpsqlWeb\infra\dao\UsersDao;
 
 $userDao = new UsersDao();
 
+$urlOrigem = $_POST['Url-Origem'];
+
 if(isset($_POST['criar'])) {
 
-    $data = [
-        "nome" => $_POST['nome'],
-        "email" => $_POST['email'],
-        "senha" => $_POST['password'],
-    ];
+  $data = [
+      "nome" => $_POST['nome'],
+      "email" => $_POST['email'],
+      "senha" => $_POST['password'],
+  ];
 
-    try {
-      if($_POST['password'] !== $_POST['repassword']) {
-          throw new InvalidArgumentException("As senhas não coincidem.");
-      }
-    } catch (InvalidArgumentException $e) {
-        echo "<script>alert('Erro: " . $e->getMessage() . "');</script>";
-        exit;
+  try {
+    if($_POST['password'] !== $_POST['repassword']) {
+        throw new InvalidArgumentException("As senhas não coincidem.");
     }
-
-    $success = $userDao->createUser($data);
-    if (!$success) {
-      echo "<script>alert('Erro ao criar usuário.');</script>";
+  } catch (InvalidArgumentException $e) {
+      echo "<script>alert('Erro: " . $e->getMessage() . "');</script>";
       exit;
-    }
-    echo "<script>alert('Usuário criado com sucesso!');</script>";
-    header("Location: login.php");
+  }
+
+  $success = $userDao->createUser($data);
+  if (!$success) {
+    echo "<script>alert('Erro ao criar usuário.');</script>";
+    exit;
+  }
+  echo "<script>alert('Usuário criado com sucesso!');</script>";
+  header('Location: ' . $urlOrigem);
+}
+
+if (isset($_POST['voltar'])) {
+    header('Location: ' . $urlOrigem);
+    exit;
 }
 ?>
 <!doctype html>
@@ -73,10 +80,11 @@ if(isset($_POST['criar'])) {
 
     <input type="submit" class="botao-cadastrar" name="criar" value="Criar"/>
   </form>
-  <button class="botao-cadastrar" onclick="window.location.href='login.php'">Voltar</button>
+  <form method="post">
+    <input type="hidden" name="Url-Origem" value="<?= $urlOrigem ?>">
+    <input type="submit" class="botao-cadastrar" name="voltar" value="Voltar"/>
+  </form>
   </section>
 </main>
 </body>
 </html>
-
-
