@@ -39,9 +39,15 @@ Docker-compose latest;
     - Página de Login funcional;
     - Página de administração;
     - Páginas de ação;
+- criação de uma página (ou tabela) de administração de usuários;
 
 Pontos que poderão ser aplicados:
-- criação de uma página (ou tabela) de administração de usuários;
-- Integração com alguma ferramenta Linter (possívelmente PHP_CodeSniffer) para estilização de código e criação de dependência de desenvolvimento;
-- Integração com PHPUnit para iniciar processo de Continuos Integration na área de testes automatizados;
 
+## Backlog
+- [Feature] Gerar relatórios em PDF com a biblioteca dompdf do Packagist;
+- [Melhoria] Refazer o desing do site (CSS);
+- [Melhoria] Organizar as páginas php em uma pasta "src/pages" e alterar as rotas nos devidos arquivos;
+- [Feature] Sistema de sessão para atividade em área logada;
+- [DEV] Integração com alguma ferramenta Linter (possívelmente PHP_CodeSniffer) para estilização de código e criação de dependência de desenvolvimento;
+- [DEV] Integração com PHPUnit para iniciar processo de Continuos Integration na área de testes automatizados;
+- [Refatorar] Classes Product, ProductsDao, User, UsersDao;
