@@ -93,7 +93,10 @@ class ProductsDao
             'SELECT 
             * 
             FROM 
-            produtos'
+            produtos
+            ORDER BY
+            tipo DESC,
+            nome ASC'
         );
 
         $statement->execute();
@@ -153,21 +156,23 @@ class ProductsDao
 
     public function validateProductData(array $data): bool
     {
-        echo "entrou na validação dos dados... \n";
-        foreach ($data as $key => $value) {
-            echo "Validando o campo '$key' com o valor '$value'... \n";
-            if ($key === 'id' && $value === "0") {
-                continue; // O campo 'id' pode ser 0 ou um número positivo
+        try{
+            foreach ($data as $key => $value) {
+                if ($key === 'id' && $value === "0") {
+                    continue; // O campo 'id' pode ser 0 ou um número positivo
+                }
+                if (empty($value)) {
+                    throw new InvalidArgumentException("O campo '$key' não pode estar vazio.");
+                }  
             }
-            if (empty($value)) {
-                throw new InvalidArgumentException("O campo '$key' não pode estar vazio.");
-                echo "Erro: O campo '$key' não pode estar vazio.";
-            }  
+            if (!is_numeric($data['preco']) || $data['preco'] <= 0) {
+                throw new InvalidArgumentException("O campo 'preço' deve ser um número positivo.");
+            }
+        } catch (InvalidArgumentException $e) {
+            echo "Erro de validação: " . $e->getMessage();
+            exit;
         }
-        if (!is_numeric($data['preco']) || $data['preco'] <= 0) {
-            throw new InvalidArgumentException("O campo 'preço' deve ser um número positivo.");
-            echo "Erro: O campo 'preço' deve ser um número positivo.";
-        }
+    
         return true;
     }
 }

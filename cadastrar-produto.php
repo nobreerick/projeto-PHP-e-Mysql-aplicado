@@ -6,7 +6,7 @@ use Nobreerick\MyphpsqlWeb\infra\dao\ProductsDao;
 
 $productDao = new ProductsDao();
 
-if ($_POST!=[]) {
+if (isset($_POST['cadastro'])) {
     $data = [
         'id' => '0', 
         'tipo' => $_POST['tipo'],
@@ -15,6 +15,29 @@ if ($_POST!=[]) {
         'imagem' => "logo-serenatto.png",
         'preco' => (float) $_POST['preco']
     ];
+
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK){
+        echo "Arquivo enviado: " . $_FILES['imagem']['name'] . "\n";
+        $file = $_FILES['imagem'];
+        $fileName = $file['name'];
+        $fileTmpName = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileError = $file['error'];
+
+        if ($fileError === 0) {
+            if ($fileSize < 5000000) { // 5MB
+                $fileDestination = __DIR__ . '/img/' . $fileName;
+                move_uploaded_file($fileTmpName, $fileDestination);
+                $data['imagem'] = $fileName;
+            } else {
+                echo "O arquivo é muito grande.";
+                exit;
+            }
+        } else {
+            echo "Erro ao enviar o arquivo.";
+            exit;
+        }
+    }
 
         $productDao->createProduct($data);
         header("Location: admin.php");
@@ -47,7 +70,7 @@ if ($_POST!=[]) {
         <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
     </section>
     <section class="container-form">
-        <form method="post" >
+        <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="0">
 
             <label for="nome">Nome</label>
@@ -84,3 +107,4 @@ if ($_POST!=[]) {
 <script src="js/index.js"></script>
 </body>
 </html>
+

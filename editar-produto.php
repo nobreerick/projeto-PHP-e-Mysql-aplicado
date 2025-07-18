@@ -23,13 +23,36 @@ if (isset($_POST["editar"])) {
       'imagem' => $imagem,
       'preco' => $preco
     ];
+    
+    if(isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+      $file = $_FILES['imagem'];
+      $fileName = $file['name'];
+      $fileTmpName = $file['tmp_name'];
+      $fileSize = $file['size'];
+      $fileError = $file['error'];
+
+      if ($fileError === 0) {
+          if ($fileSize < 5000000) { // 5MB
+              $fileDestination = __DIR__ . '/img/' . $fileName;
+              move_uploaded_file($fileTmpName, $fileDestination);
+              $productData['imagem'] = $fileName;
+          } else {
+              echo "O arquivo é muito grande.";
+              exit;
+          }
+      } else {
+          echo "Erro ao enviar o arquivo.";
+          exit;
+      }
+  }
+
     $productsDao = new ProductsDao();
     $success = $productsDao->updateProduct('id', $productData);
     if (!$success) {
       echo "Erro ao editar o produto.";
     }
     header("Location: admin.php");
-    exit();
+    exit;
 }
 ?>
 
@@ -59,7 +82,7 @@ if (isset($_POST["editar"])) {
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="id" value="<?= $_POST["id"] ?>">
 
       <label for="nome">Nome</label>
