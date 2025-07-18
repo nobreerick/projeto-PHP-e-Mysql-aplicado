@@ -13,14 +13,14 @@ $testData = [
     'ativo'=> true
 ];
 
-$testUserDao = new UsersDao();
+$userDao = new UsersDao;
 
-$success = $testUserDao->validateUserData($testData);
+$success = $userDao->validateUserPassword($testData);
 
-if (!$success) {
-    echo '0' . "\n";
-    exit;
+if (!$success){
+    echo "0\n";
+    return false;
 }
 
-echo '1' . "\n";
-
+echo "1\n";
+return true;
