@@ -128,7 +128,7 @@
       <input type="hidden" name="Url-Origem" value="admin.php">
       <input class="botao-cadastrar" id="cadastrar-usuario" type="submit" name="cadastrar-usuario" value="Cadastrar Usuário">
     </form>
-  <form action="#" method="post">
+  <form action="gerador-pdf.php" method="post">
     <input type="submit" id="relatorio-usuarios" class="botao-cadastrar" value="Baixar Relatório de Usuários"/>
   </form>
 </section>
